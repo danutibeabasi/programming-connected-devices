@@ -35,14 +35,14 @@ git clone https://gitlab.emse.fr/isi/enseignements/m-info/iot/groups/$group.git
 2. add this project as the `labs` remote, and fetch it.
 
 ```
-git remote add labs git@gitlab.emse.fr:isi/enseignements/m-info/iot/groups/labs.git
+git remote add labs git@gitlab.emse.fr:cps2/pcd/labs.git
 git fetch labs
 ```
 
 or 
 
 ```
-git remote add labs https://gitlab.emse.fr/isi/enseignements/m-info/iot/groups/labs.git
+git remote add labs https://gitlab.emse.fr/cps2/pcd/labs.git
 git fetch labs
 ```
 
