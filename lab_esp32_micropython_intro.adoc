@@ -64,6 +64,8 @@ In the Pymakr extension tab, you should find your device under `DEVICES`. Click 
 
 That's it, you opened a REPL on the ESP32! Let's play a bit with it.
 
+.Pymakr extension tab
+image::images/pymakr.png[]
 
 == Turn on/off the LEDs
 
@@ -122,7 +124,7 @@ You need to check out the following guides for this exercise:
 The circuit below is a simple voltage divider with a resistor of 10 kΩ and a potentiometer of 10 kΩ. 
 
 .Potentiometer on GPIO#27. 
-image:images/button_on_27.png[]
+image:images/potentiometer_on_27.png[]
 
 .Answer these questions and copy your code snippets below 
 . Demonstrate the voltage measured on GPIO#27 should range between 0V and 1750mV

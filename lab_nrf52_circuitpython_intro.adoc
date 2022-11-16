@@ -3,4 +3,4 @@ Maxime Lefrançois maxime.lefrancois@emse.fr v1.0, 2022-11-16
 :homepage: http://ci.mines-stetienne.fr/cps2/course/pcd/
 :toc: left
 
-In this lab you will set up your working environment in Visual Studio Code for developing a MicroPython project for your ESP32 microcontroller, and develop a small integrated project of your choice.
+In this lab you will set up your working environment in Visual Studio Code for developing a CircuitPython project for your two nRF52840 microcontrollers, and develop a small integrated project of your choice.
