@@ -12,6 +12,8 @@ This repository contains the description of the labs for the Programming Connect
 
 ## How to use this project
 
+### Set up
+
 The first thing you need to do is to clone your project, and merge this branch into your repository.
 
 Assume your group is #1
@@ -32,7 +34,9 @@ or if you haven't yet added a SSH key for secure access to GitLab (link:https://
 git clone https://gitlab.emse.fr/isi/enseignements/m-info/iot/groups/$group.git
 ```
 
-2. add this project as the `labs` remote, and fetch it.
+2. `cd` to your project folder
+
+3. add this project as the `labs` remote, and fetch it.
 
 ```
 git remote add labs git@gitlab.emse.fr:cps2/pcd/labs.git
@@ -46,10 +50,14 @@ git remote add labs https://gitlab.emse.fr/cps2/pcd/labs.git
 git fetch labs
 ```
 
-3. merge `labs/master` into your `master` branch
+4. merge `labs/master` into your `master` branch
 
 ```
 git merge labs/master
 ```
 
 Now your `master` branch is in sync with this version. You can directly edit the **adoc** documents, commit with informative messages, and push your changes. 
+
+### Update
+
+The professor may add new labs or update the existing labs. To merge these changes to your project, you need to pull `labs/master` (= fetch and merge). 
