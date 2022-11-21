@@ -52,6 +52,10 @@ NOTE: Windows users. If you don't see the COM port for your device, it may mean 
 
 NOTE: Windows users, you may use the Windows Subsystem for Linux version 1 (WSL1) to run commands. If your "port" setting is `COM5` on windows, then it becomes `/dev/ttyS5` on WSL1. Make sure your distribution uses WSL1 (not WSL2). If not, you can either convert an existing WSL2 distribution to WSL1, or install a fresh WSL1 distribution. Find tutorials online. 
 
+WARNING: PyMakr require an installation of node on your machine !
+
+WARNING: Linux users: must belong to groups `dialout` and `tty` to access the board.
+
 == Open the interactive prompt (the REPL)
 
 Once the MicroPython firmware is flashed on the device, you can install the Pymakr extension for link:https://code.visualstudio.com/Download[Visual Studio Code].
