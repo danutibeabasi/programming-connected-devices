@@ -118,33 +118,24 @@ Create a timer to turn on and off the LED on GPIO#13 every 500ms.
 
         import machine
         pin = machine.Pin(13, machine.Pin.OUT)
-        def toggle(p):
-            p.value(not p.value()) 
-        import time
-        while True: 
-            toggle(pin)
-            time.sleep_ms(500)
+        pin.on() 
+        from machine import Timer
+        tim0 = Timer(0)
+        tim0.init(period = 500, mode = Timer.PERIODIC, lambda t:pin.value(not pin.value()))
 
 Find a way to turn on and off the LED on GPIO#13 every 500ms, and the LED on GPIO#27 every 300ms.
 
         import machine
         pin13 = machine.Pin(13, machine.Pin.OUT)
-        pin27 = machine.Pin(27, machine.Pin.OUT)
-        def toggle(p):
-           p.value(not p.value()) 
-        import time
-        while True: 
-            toggle(pin)
-            time.sleep_ms(500)
-        
-        
-        
-             
-        
-        
-        
-        
-
+        pin27 = machine.Pin(27, machine.Pin.OUT) 
+        pin13.on()
+        pin27.on()
+        from machine import Timer
+        tim0 = Timer(0)
+        tim1 = Timer(1)
+        tim0.init(period = 500, mode = Timer.PERIODIC, lambda t:pin13.value(not pin13.value()))
+        tim1.init(period = 300, mode = Timer.PERIODIC, lambda t:pin27.value(not pin27.value()))
+               
 ----
 
 == Switch the LED when the button is pressed
