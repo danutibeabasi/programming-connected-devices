@@ -165,7 +165,7 @@ You need to check out the following guides for this exercise:
 .Answer these questions and copy your code snippets below 
 . Put the ESP32 to deep-sleep for 5 seconds. 
 . On wake up, print the internal temperature in degrees Celsius
-. Configure EXT0 to wake up the device from sleep if a Pin of your choice is high. 
+. Configure EXT0 to wake up the device from sleep if a Pin of your choice is low. 
 . set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
 . Put the ESP32 to deep-sleep for 5 seconds. 
 . On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius

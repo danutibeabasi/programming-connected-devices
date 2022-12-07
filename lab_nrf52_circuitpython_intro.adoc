@@ -41,7 +41,7 @@ Follow these steps:
 1. Install the CircuitPython extension for Visual Studio Code
 2. follow the steps at https://learn.adafruit.com/adafruit-feather-sense/circuitpython-on-feather-sense 
 3. open the usb directory inside visual studio code
-4. select the board using the command `> CircuitPython: choose CircuitPython Board` and select `Adafruit Industries LLC: Feather Bluefruit Sense`
+4. in the `View - Command Palette` menu, select the board using command `> CircuitPython: choose CircuitPython Board` and select `Adafruit Industries LLC: Feather Bluefruit Sense`
 5. one by one, install the libraries you need using the command `> CircuitPython: Show available libraries`, then search for a library, then press enter. the libraries should be downloaded in the lib folder.
 
 NOTE: the sources of these libraries can be found link:https://github.com/adafruit/Adafruit_CircuitPython_Bundle/tree/main/libraries/drivers[on github]. In the repository of each library, for example for the link:https://github.com/adafruit/Adafruit_CircuitPython_APDS9960[APDS9960 Proximity, Light, RGB, and Gesture Sensor], you will find the source code, the sources of the documentation, and ready-to-run examples.
@@ -69,4 +69,4 @@ IMPORTANT: You may totally use snippets from existing samples or answers to ques
 
 == Next steps
 
-Next your will work a bit with BLE. (the lab will be online soon)
+Next your will work a bit with BLE. Move to `lab_ble.adoc`
