@@ -228,14 +228,15 @@ from machine import Pin
 from machine import ADC
 pin = machine.Pin(27, machine.Pin.IN)
 adc = ADC(pin)
-adc.read()
+adc.read_uv()
 
 Write a timer that reads the raw analog value every every 100 ms, and print the actual voltage to the UART0
         
 import machine
-from machine import Pin
+from machine import Pin, UART
 from machine import ADC
 pin = machine.Pin(27, machine.Pin.IN)
+uart0 = UART(0, baudrate=9600, tx=33, rx=32)
 while True:
     adc = ADC(pin)
     print(adc.read())
