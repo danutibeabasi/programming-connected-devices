@@ -52,6 +52,7 @@ Some simple ideas:
 * Make the small monster move on the screen, and controle it using the buttons or the potentiometer
 * Develop a small JSON HTTP web service to control get the temperature and humidity, to set the RGB light, to update the text on the screen
 
+IMPORTANT: You may totally use snippets from existing samples or answers to questions on stackoverflow for example. But whenever you do **cite your sources** 
 
 == Next steps
 

@@ -37,6 +37,27 @@ Browse the specifications about the ESP32-D0WDQ6, the ESP32-WROOM-32, and the Fe
 
 _(edit this file and write your answers here)_
 
+1. Answer: FOR ALL ESP32 ROM IS 448 KB, and ADAFRUIT ROM IS 4 MB. 
+
+
+2. Answer: A0 is a 12-bit ADC, and A2 is a 10-bit ADC.
+
+3. Answer: Once the WiFi is enabled, ADC1 pins 6, 7, 8, 9, 10, and 11 are inoperable. because they are utilized in WiFi
+
+4. Answer: GPIO 34, 35, 36, 37, 38, 39 are input only.
+
+5. Answer: The WiFi antenna is on the ESP32-D0WDQ6 and the Bluetooth antenna is on the ESP32-WROOM-32
+
+6. Answer: GPIO6 to GPIO11 are used for the flash memory
+
+7. Answer: This is the chip that is used to store the wifi credentials.
+
+8. Answer: GPIO 0,2,4,5,12,13,14,15,25,26,27,32,33 are recommended for digital output and GPIO 34-39 are recommended for digital input
+
+9. Answer: GPIO#13 is special because it is used to flash the ESP32
+
+10. Answer: The hall sensor is used to measure the magnetic field and it is read on GPIO 12
+
 
 == Flash MicroPython on the ESP32
 
@@ -127,15 +148,22 @@ Find a way to turn on and off the LED on GPIO#13 every 500ms, and the LED on GPI
 
         import machine
         pin13 = machine.Pin(13, machine.Pin.OUT)
-        pin27 = machine.Pin(27, machine.Pin.OUT) 
-        pin13.on()
-        pin27.on()
-        from machine import Timer
-        tim0 = Timer(0)
-        tim1 = Timer(1)
-        tim0.init(period = 500, mode = Timer.PERIODIC, lambda t:pin13.value(not pin13.value()))
-        tim1.init(period = 300, mode = Timer.PERIODIC, lambda t:pin27.value(not pin27.value()))
-               
+        pin27 = machine.Pin(27, machine.Pin.OUT)
+        def toggle(p):
+           p.value(not p.value()) 
+        import time
+        while True: 
+            toggle(pin)
+            time.sleep_ms(500)
+        
+        
+        
+             
+        
+        
+        
+        
+
 ----
 
 == Switch the LED when the button is pressed
@@ -153,7 +181,24 @@ image:images/button_on_27.png[]
 
 [source,python]
 ----
-python code here
+#Configure GPIO#27 as input with internal pull-up (so the default value is HIGH), and turn on and off the embedded LED on GPIO#13 whenever the button is pressed (on falling edge).
+
+import machine
+from machine import Pin
+
+pin = machine.Pin(13, machine.Pin.OUT)
+button = machine.Pin(27, machine.Pin.IN, machine.Pin.PULL_UP)
+
+def toggle(p):
+    p.value(not p.value())
+
+def callback(p):
+        toggle(pin)
+
+button.irq(trigger=Pin.IRQ_FALLING, handler=callback)
+
+
+
 ----
 
 == Print the value of the potentiometer
@@ -175,7 +220,26 @@ image:images/potentiometer_on_27.png[]
 
 [source,python]
 ----
-python code here
+
+Demonstrate the voltage measured on GPIO#27 should range between 0V and 1750mV
+
+import machine
+from machine import Pin
+from machine import ADC
+pin = machine.Pin(27, machine.Pin.IN)
+adc = ADC(pin)
+adc.read()
+
+Write a timer that reads the raw analog value every every 100 ms, and print the actual voltage to the UART0
+        
+import machine
+from machine import Pin
+from machine import ADC
+pin = machine.Pin(27, machine.Pin.IN)
+while True:
+    adc = ADC(pin)
+    print(adc.read())
+    time.sleep_ms(100)
 ----
 
 
@@ -212,8 +276,14 @@ You need to check out the following guides for this exercise:
 
 [source,python]
 ----
-python code here
+
 ----
+
+
+        
+                
+                
+        
 
 == DHT22 temperature sensor
 
@@ -240,7 +310,7 @@ image:images/dht22_on_27.png[]
 
 [source,python]
 ----
-python code here
+
 ----
 
 == WS2812B Breakout RGB led
