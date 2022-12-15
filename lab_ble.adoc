@@ -24,11 +24,11 @@ Browse these specifications and the link:https://github.com/micropython/micropyt
 1. **In what document(s) can you find the specification of the `org.bluetooth.service.environmental_sensing` service?** 
 2. **What is the format of the `org.bluetooth.characteristic.temperature` characteristic according to the specification?**
 3. **How are the appearance UUIDs used by BLE clients such as your phone?**
-4. **Find appropriate BLE services and characteristics for the sensors you have, given the project project**
+4. **Find appropriate BLE services and characteristics for the sensors you have, given your project**
 
 _(edit this file and write your answers here)_
 
-Install the **ST BLE Mesh** application on your smartphone, and make so that your device behaves as a valid BLE peripheral.
+Install the **nRF Connect** application on your smartphone, and make so that your device behaves as a valid BLE peripheral.
 
 Develop a BLE client to access the BLE peripheral.
 
