@@ -73,13 +73,16 @@ NOTE: Windows users. If you don't see the COM port for your device, it may mean 
 
 NOTE: Windows users, you may use the Windows Subsystem for Linux version 1 (WSL1) to run commands. If your "port" setting is `COM5` on windows, then it becomes `/dev/ttyS5` on WSL1. Make sure your distribution uses WSL1 (not WSL2). If not, you can either convert an existing WSL2 distribution to WSL1, or install a fresh WSL1 distribution. Find tutorials online. 
 
+WARNING: Linux users: must belong to groups `dialout` and `tty` to access the board.
+
 == Open the interactive prompt (the REPL)
 
 Once the MicroPython firmware is flashed on the device, you can install the Pymakr extension for link:https://code.visualstudio.com/Download[Visual Studio Code].
 
 
 1. Make sure you have link:https://code.visualstudio.com/Download[Visual Studio Code] installed 
-2. Make sure you have the following extensions installed: link:https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack[Python Extension Pack], link:https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance[Pylance], link:https://marketplace.visualstudio.com/items?itemName=pycom.Pymakr[Pymakr].
+2. PyMakr require an installation of node.js on your machine. Make sure you can run command `node`.
+3. Make sure you have the following extensions installed: link:https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack[Python Extension Pack], link:https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance[Pylance], link:https://marketplace.visualstudio.com/items?itemName=pycom.Pymakr[Pymakr].
 
 In the Pymakr extension tab, you should find your device under `DEVICES`. Click on "Connect Device" (🗲 button), then on "Create a Terminal". 
 
@@ -311,7 +314,7 @@ You need to check out the following guides for this exercise:
 .Answer these questions and copy your code snippets below 
 . Put the ESP32 to deep-sleep for 5 seconds. 
 . On wake up, print the internal temperature in degrees Celsius
-. Configure EXT0 to wake up the device from sleep if a Pin of your choice is high. 
+. Configure EXT0 to wake up the device from sleep if a Pin of your choice is low. 
 . set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
 . Put the ESP32 to deep-sleep for 5 seconds. 
 . On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius

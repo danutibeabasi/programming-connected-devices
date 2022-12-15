@@ -7,8 +7,9 @@ This repository contains the description of the labs for the Programming Connect
 1. [`lab_testing_electronic_components.adoc`](lab_testing_electronic_components.adoc)
 2. [`lab_esp32_micropython_intro.adoc`](lab_esp32_micropython_intro.adoc)
 3. [`lab_esp32_micropython_project.adoc`](lab_esp32_micropython_project.adoc)
-4. ... more soon ...
-
+4. [`lab_nrf52_circuitpython_intro.adoc`](lab_nrf52_circuitpython_intro.adoc)
+5. [`lab_ble.adoc`](lab_ble.adoc)
+6. [`project.adoc`](project.adoc)
 
 ## How to use this project
 
@@ -50,14 +51,19 @@ git remote add labs https://gitlab.emse.fr/cps2/pcd/labs.git
 git fetch labs
 ```
 
-4. merge `labs/master` into your `master` branch
+4. merge `labs master` into your `master` branch
 
 ```
-git merge labs/master
+git merge labs master
 ```
 
 Now your `master` branch is in sync with this version. You can directly edit the **adoc** documents, commit with informative messages, and push your changes. 
 
 ### Update
 
-The professor may add new labs or update the existing labs. To merge these changes to your project, you need to pull `labs/master` (= fetch and merge). 
+The professor may add new labs or update the existing labs. To merge these changes to your project, you need to pull `labs master` (= fetch and merge). 
+
+```
+git pull labs master
+```
+
