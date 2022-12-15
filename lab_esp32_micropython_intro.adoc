@@ -323,6 +323,56 @@ You need to check out the following guides for this exercise:
 [source,python]
 ----
 python code here
+
+#Put the ESP32 to deep-sleep for 5 seconds.
+from machine import deepsleep
+deepsleep(5000)
+
+#On wake up, print the internal temperature in degrees Celsius
+from machine import deepsleep
+from esp32 import raw_temperature
+deepsleep(5000)
+temp = raw_temperature() / 100
+print("Temperature: {}".format(temp))
+
+
+#Configure EXT0 to wake up the device from sleep if a Pin of your choice is low.
+
+from machine import deepsleep, Pin
+wakeup_pin = Pin(0, Pin.IN)
+wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
+deepsleep()
+
+#set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
+
+from machine import deepsleep, Pin
+wakeup_pin = Pin(0, Pin.IN)
+wakeup_pin.irq(trigger=Pin.IRQ_RISING, handler=lambda pin: None)
+button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
+while True:
+  if not button_pin.value():
+    deepsleep()
+
+#Put the ESP32 to deep-sleep for 5 seconds.
+from machine import deepsleep
+deepsleep(5000)
+
+#On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius
+
+from machine import deepsleep, Pin
+
+wakeup_pin = Pin(0, Pin.IN)
+wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
+
+button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
+while True:
+  if not button_pin.value():
+    deepsleep()
+
+from esp32 import raw_temperature
+temp = raw_temperature() / 100
+print("Temperature: {}".format(temp))
+
 ----
        
 
@@ -411,6 +461,10 @@ image:images/8x8_monsters.png[]
 [source,python]
 ----
 python code here
+
+#What does I2C stands for?
+
+
 ----
 
 
