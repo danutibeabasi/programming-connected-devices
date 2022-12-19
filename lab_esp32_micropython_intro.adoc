@@ -236,11 +236,29 @@ import machine
 from machine import Pin, UART
 from machine import ADC
 pin = machine.Pin(27, machine.Pin.IN)
+adc = ADC(pin)
 uart0 = UART(0, baudrate=9600, tx=33, rx=32)
 while True:
-    adc = ADC(pin)
-    print(adc.read())
+    uart0.write(adc.read_uv())
+    print(adc.read_uv())
     time.sleep_ms(100)
+
+Use this value to control the pulse width modulation duty cycle on GPIO#13, so as to control the luminosity of the inner LED
+
+import machine, time
+from machine import Pin, UART, PWM
+from machine import ADC
+pin = machine.Pin(27, machine.Pin.IN)
+adc = ADC(pin)
+pwm0 = PWM(Pin(13))
+pwm0.freq(1000)
+while True:  
+    value = int((adc.read_uv()-63000)/(176000-63000))*1023
+    pwm0.duty(value)
+    print(adc.read_uv())
+    time.sleep_ms(100)
+
+
 ----
 
 
@@ -254,10 +272,42 @@ You need to check out the following guides, examples, and sources, for this exer
 
 .Answer these questions and copy your code snippets below 
 . Print the current date and time of the ESP32
+
 . Connect the ESP32 to your phone, configured as a WiFi Access Point.
 . Print the IP address of your ESP32, and of your phone 
 . Synchronize the internal clock with using the NTP protocol using the `ntptime` module
 . Print the updated date and time, modified to take into account our timezone.
+
+[source,python]
+----
+Print the current date and time of the ESP32
+
+  import time
+  time.gmtime()
+
+Connect the ESP32 to your phone, configured as a WiFi Access Point.
+
+import network
+wlan = network.WLAN(network.STA_IF)
+wlan.connect("Galaxy S20 FE 5G341E", "password")
+wlan.isconnected()
+
+Print the IP address of your ESP32, and of your phone
+
+import network
+wlan = network.WLAN(network.STA_IF)
+wlan.connect("Galaxy S20 FE 5G341E", "password")
+wlan.isconnected()
+wlan.ifconfig()
+
+
+
+Synchronize the internal clock with using the NTP protocol using the `ntptime` module
+
+
+
+Print the updated date and time, modified to take into account our timezone.
+----
 
 == Deep-sleep and temperature reading
 
