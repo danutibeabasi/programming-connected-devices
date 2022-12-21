@@ -58,6 +58,22 @@ _(edit this file and write your answers here)_
 
 10. Answer: The hall sensor is used to measure the magnetic field and it is read on GPIO 12
 
+11. Answer: UART RX/TX are used to bootload/debug 
+
+12. Answer: JST(Japan Solderless Terminal) Jack is a wire to board connector. In Adafruit Huzzah32, it is used to connect to LiPoly/LiIon battery which will allow the featherboard to run on rechargable battery.
+
+13. Answer: 5V
+
+14. Answer: It will cause unexpected behaviour and might even destroy the FeatherBoard
+
+15. Answer: 
+
+16. Answer: The 32 KHz crystals are used to generate Oscillations(different frequencies)
+
+
+17. Answer: We will measure between 150 mV ~ 2450 mV
+
+
 
 == Flash MicroPython on the ESP32
 
@@ -73,13 +89,16 @@ NOTE: Windows users. If you don't see the COM port for your device, it may mean 
 
 NOTE: Windows users, you may use the Windows Subsystem for Linux version 1 (WSL1) to run commands. If your "port" setting is `COM5` on windows, then it becomes `/dev/ttyS5` on WSL1. Make sure your distribution uses WSL1 (not WSL2). If not, you can either convert an existing WSL2 distribution to WSL1, or install a fresh WSL1 distribution. Find tutorials online. 
 
+WARNING: Linux users: must belong to groups `dialout` and `tty` to access the board.
+
 == Open the interactive prompt (the REPL)
 
 Once the MicroPython firmware is flashed on the device, you can install the Pymakr extension for link:https://code.visualstudio.com/Download[Visual Studio Code].
 
 
 1. Make sure you have link:https://code.visualstudio.com/Download[Visual Studio Code] installed 
-2. Make sure you have the following extensions installed: link:https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack[Python Extension Pack], link:https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance[Pylance], link:https://marketplace.visualstudio.com/items?itemName=pycom.Pymakr[Pymakr].
+2. PyMakr require an installation of node.js on your machine. Make sure you can run command `node`.
+3. Make sure you have the following extensions installed: link:https://marketplace.visualstudio.com/items?itemName=donjayamanne.python-extension-pack[Python Extension Pack], link:https://marketplace.visualstudio.com/items?itemName=ms-python.vscode-pylance[Pylance], link:https://marketplace.visualstudio.com/items?itemName=pycom.Pymakr[Pymakr].
 
 In the Pymakr extension tab, you should find your device under `DEVICES`. Click on "Connect Device" (🗲 button), then on "Create a Terminal". 
 
@@ -197,8 +216,6 @@ def callback(p):
 
 button.irq(trigger=Pin.IRQ_FALLING, handler=callback)
 
-
-
 ----
 
 == Print the value of the potentiometer
@@ -262,6 +279,7 @@ while True:
 ----
 
 
+
 == Hello Internet !
 
 You need to check out the following guides, examples, and sources, for this exercise:
@@ -280,19 +298,20 @@ You need to check out the following guides, examples, and sources, for this exer
 
 [source,python]
 ----
-Print the current date and time of the ESP32
+<<<<<<< HEAD
+1. Print the current date and time of the ESP32
 
   import time
   time.gmtime()
 
-Connect the ESP32 to your phone, configured as a WiFi Access Point.
+2. Connect the ESP32 to your phone, configured as a WiFi Access Point.
 
 import network
 wlan = network.WLAN(network.STA_IF)
 wlan.connect("Galaxy S20 FE 5G341E", "password")
 wlan.isconnected()
 
-Print the IP address of your ESP32, and of your phone
+3. Print the IP address of your ESP32, and of your phone
 
 import network
 wlan = network.WLAN(network.STA_IF)
@@ -302,11 +321,39 @@ wlan.ifconfig()
 
 
 
+4. Synchronize the internal clock with using the NTP protocol using the `ntptime` module
+
+
+
+5. Print the updated date and time, modified to take into account our timezone.
+=======
+
+Print the current date and time of the ESP32
+
+import time
+print(time.localtime())
+
+Connect the ESP32 to your phone, configured as a WiFi Access Point.
+
+Print the IP address of your ESP32, and of your phone
+
+import network
+sta_if = network.WLAN(network.STA_IF)
+sta_if.active(True)
+sta_if.connect('dann', '123456780')
+sta_if.ifconfig()
+
 Synchronize the internal clock with using the NTP protocol using the `ntptime` module
 
+import ntptime
+ntptime.settime()
 
 
 Print the updated date and time, modified to take into account our timezone.
+
+import time
+print(time.localtime())
+>>>>>>> cdfec4cd174304ede390da5bd3273acb0228bb02
 ----
 
 == Deep-sleep and temperature reading
@@ -319,7 +366,7 @@ You need to check out the following guides for this exercise:
 .Answer these questions and copy your code snippets below 
 . Put the ESP32 to deep-sleep for 5 seconds. 
 . On wake up, print the internal temperature in degrees Celsius
-. Configure EXT0 to wake up the device from sleep if a Pin of your choice is high. 
+. Configure EXT0 to wake up the device from sleep if a Pin of your choice is low. 
 . set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
 . Put the ESP32 to deep-sleep for 5 seconds. 
 . On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius
@@ -327,14 +374,60 @@ You need to check out the following guides for this exercise:
 
 [source,python]
 ----
+python code here
+
+#Put the ESP32 to deep-sleep for 5 seconds.
+from machine import deepsleep
+deepsleep(5000)
+
+#On wake up, print the internal temperature in degrees Celsius
+from machine import deepsleep
+from esp32 import raw_temperature
+deepsleep(5000)
+temp = raw_temperature() / 100
+print("Temperature: {}".format(temp))
+
+
+#Configure EXT0 to wake up the device from sleep if a Pin of your choice is low.
+
+from machine import deepsleep, Pin
+wakeup_pin = Pin(13, Pin.IN)
+wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
+deepsleep()
+machine.wake_on_ext0(wakeup_pin, machine.WAKEUP_ALL_LOW)
+
+#set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
+
+from machine import deepsleep, Pin
+wakeup_pin = Pin(0, Pin.IN)
+wakeup_pin.irq(trigger=Pin.IRQ_RISING, handler=lambda pin: None)
+button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
+while True:
+  if not button_pin.value():
+    deepsleep()
+
+#Put the ESP32 to deep-sleep for 5 seconds.
+from machine import deepsleep
+deepsleep(5000)
+
+#On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius
+
+from machine import deepsleep, Pin
+
+wakeup_pin = Pin(0, Pin.IN)
+wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
+
+button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
+while True:
+  if not button_pin.value():
+    deepsleep()
+
+from esp32 import raw_temperature
+temp = raw_temperature() / 100
+print("Temperature: {}".format(temp))
 
 ----
-
-
-        
-                
-                
-        
+       
 
 == DHT22 temperature sensor
 
@@ -361,7 +454,18 @@ image:images/dht22_on_27.png[]
 
 [source,python]
 ----
+python code here
 
+#Make the setting below and read the temperature and the humidity
+
+from machine import Pin
+from dht import DHT22
+d = DHT22(Pin(27))
+d.measure()
+print(d.temperature())
+print(d.humidity())
+
+#Use excerpts of the code from `dht.py` to fetch an actual data frame (40 bits) from the DHT22 sensor, and display the 16 bits of the temperature and the corresponding integer value, the 16 bits of the humidity and the corresponding integer value, and the 8 bits of the checksum.
 ----
 
 == WS2812B Breakout RGB led
@@ -421,6 +525,74 @@ image:images/8x8_monsters.png[]
 [source,python]
 ----
 python code here
+
+#What does I2C stands for?
+I2C stands for Inter-Integrated Circuit
+
+#To what pins are buttons A, B, C, connected?
+A = 15
+B = 2
+C = 0
+
+#What is the default I2C address for the I2C peripheral? Check from the official documentation section 8.1.5 a), with "SA0"=0. and "R/W#"=0
+0x3C
+
+#Print the current date and time on the screen, update every second.
+from machine import I2C, Pin
+from ssd1306 import SSD1306_I2C
+import utime
+
+I2C_Start();  // set I2C start sequence
+I2C_Send(slave_address|1); Send I2C slave address in read mode
+I2C_read_ACK(); //master will know slave got data 
+while(number_of bytes){
+I2C_Read();
+I2C_send_ACK();
+number_of bytes--;
+}
+I2C_NAK();    //slave need to know so it will not prepare next data.
+I2C_Stop();   //stop communication
+
+
+I2C_Start();  // set I2C start sequence
+I2C_Send(slave_address); Send I2C slave address in write mode
+I2C_read_ACK(); //master will know slave got data 
+while(number_of bytes){
+I2C_Write();
+I2C_read_ACK(); //master will know slave got data 
+number_of bytes--;
+}
+I2C_Stop(); //stop communication
+
+
+#When button A is pressed, invert the colours.
+from machine import Pin
+from ssd1306 import SSD1306_I2C
+import utime
+
+def button_a_was_pressed():
+    print("Button A was pressed")
+
+button_a = Pin(15, Pin.IN, Pin.PULL_UP)
+button_a.irq(trigger=Pin.IRQ_FALLING, handler=button_a_was_pressed)
+
+#Also print a counter that increments when button B is pressed (use an interrupt)
+from machine import Pin
+from ssd1306 import SSD1306_I2C
+import utime
+
+def button_b_was_pressed():
+    print("Button B was pressed")
+
+button_b = Pin(2, Pin.IN, Pin.PULL_UP)
+button_b.irq(trigger=Pin.IRQ_FALLING, handler=button_b_was_pressed)
+
+#In this file, we see that the framebuf.FrameBuffer.text() method uses the font_petme128_8x8 object at line 794, which stores the pixel array for each ascii character and is defined in a library that is included at line 35.
+#Describe how each character is defined as bits and bytes.
+
+
+
+
 ----
 
 

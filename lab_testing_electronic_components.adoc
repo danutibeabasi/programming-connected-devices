@@ -34,7 +34,7 @@ image::images/chart_resistor.png[]
 
 **What resistor values do you have ?**
 
-_(edit this file and write your answers here)_
+_(474kΩ 5% and 224kΩ 5%)_
 
 == LED
 
@@ -47,7 +47,9 @@ image::images/LED.png[]
 1. **calculate the voltage across the resistor**
 2. **calculate the current flowing through the circuit using the formula U = R x I**
 
-_(edit this file and write your answers here)_
+_(1.  V = 3.3 - 2 = 1.3 V )_
+
+_(2.  I = 1.3 / 220 = 0.0059 A)_
 
 == Buttons
 
@@ -62,7 +64,9 @@ image::images/button.png[]
 1. **What model is the grey button? the pink button?**
 2. **What operating force do they have?**
 
-_(edit this file and write your answers here)_
+_(1. The grey button is the B3F-1000P and the pink button is the B3F-1000P-1A)_
+
+_(2. The operating force of the grey button is 0.5 N and the operating force of the pink button is 0.2 N)_
 
 
 == Potentiometer
