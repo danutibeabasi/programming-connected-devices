@@ -538,43 +538,43 @@ C = 0
 0x3C
 
 #Print the current date and time on the screen, update every second.
-from machine import I2C, Pin
-from ssd1306 import SSD1306_I2C
-import utime
+from machine import Pin, SoftI2C
+import ssd1306
+import framebuf
+import time
 
-I2C_Start();  // set I2C start sequence
-I2C_Send(slave_address|1); Send I2C slave address in read mode
-I2C_read_ACK(); //master will know slave got data 
-while(number_of bytes){
-I2C_Read();
-I2C_send_ACK();
-number_of bytes--;
-}
-I2C_NAK();    //slave need to know so it will not prepare next data.
-I2C_Stop();   //stop communication
-
-
-I2C_Start();  // set I2C start sequence
-I2C_Send(slave_address); Send I2C slave address in write mode
-I2C_read_ACK(); //master will know slave got data 
-while(number_of bytes){
-I2C_Write();
-I2C_read_ACK(); //master will know slave got data 
-number_of bytes--;
-}
-I2C_Stop(); //stop communication
+i2c = SoftI2C(sda=Pin(23), scl=Pin(22))
+display = ssd1306.SSD1306_I2C(128, 64, i2c)
+display.poweron()
+currenttime = ''
+for t in time.gmtime():
+    currenttime = currenttime + str(t)
+print(currenttime)
+display.text(currenttime, 0, 0, 1)
+display.show()
 
 
 #When button A is pressed, invert the colours.
-from machine import Pin
-from ssd1306 import SSD1306_I2C
-import utime
+from machine import Pin, SoftI2C
+import ssd1306
+import framebuf
+import time
 
-def button_a_was_pressed():
-    print("Button A was pressed")
+i2c = SoftI2C(sda=Pin(23), scl=Pin(22))
+display = ssd1306.SSD1306_I2C(128, 64, i2c)
+buttonA = Pin(15, Pin.OUT)
 
-button_a = Pin(15, Pin.IN, Pin.PULL_UP)
-button_a.irq(trigger=Pin.IRQ_FALLING, handler=button_a_was_pressed)
+
+currenttime = ''
+for t in time.gmtime():
+    currenttime = currenttime + str(t)
+print(currenttime)
+display.text(currenttime, 0, 5, 1)
+
+if buttonA:
+    display.fill(1)
+    display.text(currenttime, 0, 5, 0)
+display.show()
 
 #Also print a counter that increments when button B is pressed (use an interrupt)
 from machine import Pin

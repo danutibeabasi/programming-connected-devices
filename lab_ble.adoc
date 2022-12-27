@@ -28,6 +28,14 @@ Browse these specifications and the link:https://github.com/micropython/micropyt
 
 _(edit this file and write your answers here)_
 
+Answers:
+
+1. In documents Mesh Profile 1.0.1 Specification and Mesh Device Properties 2 Specifications.
+
+2. The first value - average ambient temperature as measured during a period of time, the second value - start of the period, and the third value - end of the period.
+
+3. 
+
 Install the **nRF Connect** application on your smartphone, and make so that your device behaves as a valid BLE peripheral.
 
 Develop a BLE client to access the BLE peripheral.
