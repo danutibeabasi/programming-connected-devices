@@ -58,6 +58,22 @@ _(edit this file and write your answers here)_
 
 10. Answer: The hall sensor is used to measure the magnetic field and it is read on GPIO 12
 
+11. Answer: UART RX/TX are used to bootload/debug 
+
+12. Answer: JST(Japan Solderless Terminal) Jack is a wire to board connector. In Adafruit Huzzah32, it is used to connect to LiPoly/LiIon battery which will allow the featherboard to run on rechargable battery.
+
+13. Answer: 5V
+
+14. Answer: It will cause unexpected behaviour and might even destroy the FeatherBoard
+
+15. Answer: 
+
+16. Answer: The 32 KHz crystals are used to generate Oscillations(different frequencies)
+
+
+17. Answer: We will measure between 150 mV ~ 2450 mV
+
+
 
 == Flash MicroPython on the ESP32
 
@@ -142,12 +158,10 @@ Create a timer to turn on and off the LED on GPIO#13 every 500ms.
 
         import machine
         pin = machine.Pin(13, machine.Pin.OUT)
-        def toggle(p):
-            p.value(not p.value()) 
-        import time
-        while True: 
-            toggle(pin)
-            time.sleep_ms(500)
+        pin.on() 
+        from machine import Timer
+        tim0 = Timer(0)
+        tim0.init(period = 500, mode = Timer.PERIODIC, lambda t:pin.value(not pin.value()))
 
 Find a way to turn on and off the LED on GPIO#13 every 500ms, and the LED on GPIO#27 every 300ms.
 
@@ -160,27 +174,15 @@ Find a way to turn on and off the LED on GPIO#13 every 500ms, and the LED on GPI
         while True: 
             toggle(pin)
             time.sleep_ms(500)
+        
+        
+        
+             
+        
+        
+        
+        
 
-Solution to Number 4 using the uasyncio module for asynchronous I/O scheduling
-
-        import machine
-        import uasyncio as asyncio
-
-        async def blink(pin, delay):
-        while True:
-                pin.on()
-                await asyncio.sleep_ms(delay)
-                pin.off()
-                await asyncio.sleep_ms(delay)
-
-
-        async def main():
-        pin1 = machine.Pin(13, machine.Pin.OUT)
-        pin2 = machine.Pin(27, machine.Pin.OUT)
-        await asyncio.gather(blink(pin1, 500), blink(pin2, 300))
-
-        loop = asyncio.get_event_loop()
-        loop.run_until_complete(main())
 ----
 
 == Switch the LED when the button is pressed
@@ -242,47 +244,19 @@ from machine import Pin
 from machine import ADC
 pin = machine.Pin(27, machine.Pin.IN)
 adc = ADC(pin)
-voltage = adc.read()
-millivolts = voltage * (3300 / 4096)
-print(millivolts, "mV")
-
-
+adc.read()
 
 #Write a timer that reads the raw analog value every every 100 ms, and print the actual voltage to the UART0
         
 import machine
 import time
 pin = machine.Pin(27, machine.Pin.IN)
-while True:
 adc = ADC(pin)
-voltage = adc.read()
-millivolts = voltage * (3300 / 4096)
-print(millivolts, "mV")
-time.sleep_ms(100)
-
-
-#Use this value to control the pulse width modulation duty cycle on GPIO#13, so as to control the luminosity of the inner LED
-
-import machine
-import time
-pin = machine.Pin(27, machine.Pin.IN)
-adc = ADC(pin)
-adc.width(ADC.WIDTH_12BIT)
-pwm = machine.PWM(machine.Pin(13))
-pwm.freq(1000)
+uart0 = UART(0, baudrate=9600, tx=33, rx=32)
 while True:
-voltage = adc.read()
-millivolts = voltage * (3300 / 4096)
-print(millivolts, "mV")
-duty_cycle = int(millivolts / 1750 * 1023)
-if duty_cycle < 0:
-duty_cycle = 0
-elif duty_cycle > 1023:
-duty_cycle = 1023
-pwm.duty(duty_cycle)
-time.sleep_ms(100)
-
-
+    adc = ADC(pin)
+    print(adc.read())
+    time.sleep_ms(100)
 ----
 
 
@@ -297,6 +271,7 @@ You need to check out the following guides, examples, and sources, for this exer
 
 .Answer these questions and copy your code snippets below 
 . Print the current date and time of the ESP32
+
 . Connect the ESP32 to your phone, configured as a WiFi Access Point.
 . Print the IP address of your ESP32, and of your phone 
 . Synchronize the internal clock with using the NTP protocol using the `ntptime` module
@@ -304,6 +279,35 @@ You need to check out the following guides, examples, and sources, for this exer
 
 [source,python]
 ----
+<<<<<<< HEAD
+1. Print the current date and time of the ESP32
+
+  import time
+  time.gmtime()
+
+2. Connect the ESP32 to your phone, configured as a WiFi Access Point.
+
+import network
+wlan = network.WLAN(network.STA_IF)
+wlan.connect("Galaxy S20 FE 5G341E", "password")
+wlan.isconnected()
+
+3. Print the IP address of your ESP32, and of your phone
+
+import network
+wlan = network.WLAN(network.STA_IF)
+wlan.connect("Galaxy S20 FE 5G341E", "password")
+wlan.isconnected()
+wlan.ifconfig()
+
+
+
+4. Synchronize the internal clock with using the NTP protocol using the `ntptime` module
+
+
+
+5. Print the updated date and time, modified to take into account our timezone.
+=======
 
 Print the current date and time of the ESP32
 
@@ -367,9 +371,10 @@ print("Temperature: {}".format(temp))
 #Configure EXT0 to wake up the device from sleep if a Pin of your choice is low.
 
         from machine import deepsleep, Pin
-        wakeup_pin = Pin(0, Pin.IN)
+        wakeup_pin = Pin(13, Pin.IN)
         wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
         deepsleep()
+machine.wake_on_ext0(wakeup_pin, machine.WAKEUP_ALL_LOW)
 
 #set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
 

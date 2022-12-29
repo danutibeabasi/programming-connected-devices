@@ -34,7 +34,7 @@ image::images/chart_resistor.png[]
 
 **What resistor values do you have ?**
 
-_(edit this file and write your answers here)_
+_(474kΩ 5% and 224kΩ 5%)_
 
 == LED
 
