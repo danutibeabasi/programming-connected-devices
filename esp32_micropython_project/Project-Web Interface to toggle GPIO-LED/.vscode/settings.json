@@ -1,0 +1,22 @@
+{
+    "python.linting.enabled": true,
+    "python.jediEnabled": false,
+    "python.autoComplete.extraPaths": [
+        "espTypeshed",
+        "lib",
+    ],
+    "python.autoComplete.typeshedPaths": [
+        "espTypeshed",
+        "lib",
+    ],
+    "python.analysis.typeshedPaths": [
+        "espTypeshed",
+        "lib",
+    ],
+    "python.linting.pylintEnabled": true,
+    "python.analysis.extraPaths": [
+        "espTypeshed",
+        "lib",
+    ],
+    "python.languageServer": "Default"
+}
