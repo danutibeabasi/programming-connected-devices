@@ -71,7 +71,26 @@ Answer the following questions.
 1. **List some of the main differences you notice in the core modules of MicroPython and CircuitPython**
 2. **If one wants to backport a CircuitPython to MicroPython, what kind of modifications could be necessary?**
 
-_(edit this file and write your answers here)_
+_(1. There are a few key differences between MicroPython and CircuitPython core modules:
+
+- MicroPython can be used with a wide variety of microcontrollers, while CircuitPython is optimised for hardware based on the Microchip ATSAMD51 microcontroller.
+
+- MicroPython is a more general set of libraries meant to interact with a larger variety of hardware, whereas CircuitPython comes with a library of modules and functions that are particular to the ATSAMD51 microcontroller.
+
+- CircuitPython has language features like the "async" and "await" keywords that allow for asynchronous programming. These keywords are not available in MicroPython.
+
+- CircuitPython has built-in support for reading and writing files to a filesystem on an external storage device, like an SD card, while MicroPython does not.
+
+- When it comes to debugging and testing code, CircuitPython has an integrated serial REPL (read-eval-print loop), but MicroPython needs a separate tool, like a serial terminal, to do so.)_
+
+
+_(2. Backporting a CircuitPython project to MicroPython may require a number of changes to the source code. Listed here are a few illustrations:
+
+- Since CircuitPython has some libraries and modules that MicroPython doesn't have. One may need to make adjustments to your code in order to make use of analogous MicroPython modules or come up with workarounds for the missing functionality.
+
+- In terms of syntax, CircuitPython and MicroPython may have some minor changes. For example, CircuitPython uses the "async" and "await" keywords for asynchronous programming, while MicroPython uses "yield from".
+
+- With more memory than MicroPython, CircuitPython can be used with more powerful microcontrollers. Finding alternative methods of storing data, such as an SD card or external flash memory, or optimising your code to consume less RAM may be necessary.)_
 
 == Small integrated project
 
