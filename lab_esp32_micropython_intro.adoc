@@ -66,7 +66,7 @@ _(edit this file and write your answers here)_
 
 14. Answer: It will cause unexpected behaviour and might even destroy the FeatherBoard
 
-15. Answer: 
+15. Answer: The Serial0 interface is used for serial communication. It allows for the transmission of data between devices using a serial protocol. This can be used for things like debugging, sending data between devices, or communicating with external devices using a serial connection.
 
 16. Answer: The 32 KHz crystals are used to generate Oscillations(different frequencies)
 
@@ -303,6 +303,21 @@ wlan.ifconfig()
 
 
 4. Synchronize the internal clock with using the NTP protocol using the `ntptime` module
+
+import network
+import ntptime
+
+# Connect to WiFi network
+sta_if = network.WLAN(network.STA_IF)
+sta_if.active(True)
+sta_if.connect("YOUR_WIFI_SSID", "YOUR_WIFI_PASSWORD")
+
+# Wait for connection
+while not sta_if.isconnected():
+    pass
+
+# Synchronize the internal clock with the NTP server
+ntptime.settime()
 
 
 
