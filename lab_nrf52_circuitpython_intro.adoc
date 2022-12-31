@@ -25,14 +25,52 @@ image::images/Adafruit_Feather_nRF52840_Sense_pinout.png[]
 
 Browse the specifications about these products.  Answer the following questions.
 
-1. **What kind and how much of flash is available for programs?** 
+1. **What kind and how much of flash is available for programs?**
 2. **For each sensor, state what is its digital interface to the main nRF52840 SoC.**
 3. **For I2C connected devices, provide examples of data flow for obtaining measurement values.** 
 4. **How is the microphone data transmitted?**
+Answer: the microphone data is transmitted 
 5. **Why are the proximity light and the accelerometer/gyro connected have interrupt pins on gpio#36 and gpio#3? What can that be used for? How?**
 6. **What kind of process would be necessary to detect that the sound is louder than a threshold value?**
 
-_(edit this file and write your answers here)_
+_(1. In terms of flash memory, the nRF52840 Soc includes 1 MB of flash and 256 KB of RAM.)_
+
+_(2. The sensors are connected to the nRF52840 SoC through I2C, SPI, or UART.)_
+
+_(3. The data flow for obtaining measurement values from the SHT Humidity sensor is as follows:
+1. The master sends a start condition.
+2. The master sends the slave address and the R/W bit.
+3. The slave sends an acknowledge.
+4. The master sends the command to read the temperature.
+5. The slave sends an acknowledge.
+6. The master sends a stop condition.
+7. The master sends a start condition.
+8. The master sends the slave address and the R/W bit.
+9. The slave sends an acknowledge.
+10. The master reads the temperature data.
+11. The master sends a stop condition. )_
+
+_(4. The microphone data on the Adafruit Feather nRF52840 Sense is transmitted through the PDM (Pulse-Density Modulation) interface. PDM is a type of digital audio encoding that converts an analog audio signal into a digital signal by sampling the amplitude of the audio waveform at regular intervals and representing the samples as a series of pulse density values. The PDM interface allows the microphone data to be transmitted to other devices, such as a microcontroller or digital signal processor, for further processing or storage.)_
+
+_(5. The proximity light and the accelerometer/gyro have interrupt pins on gpio#36 and gpio#3, respectively, because they can be used to detect when the proximity light or the accelerometer/gyro is triggered. The proximity light can be used to detect when a person is near the device, while the accelerometer/gyro can be used to detect when the device is moved. These interrupt pins can be used to trigger an interrupt service routine (ISR) that can be programmed to perform a specific action when the interrupt is triggered. This allows the device to perform certain tasks in response to certain events without the need for continuous polling.)_
+
+_(6. The process to detect that the sound is louder than a threshold value would be as follows:
+1. The master sends a start condition.
+2. The master sends the slave address and the R/W bit.
+3. The slave sends an acknowledge.
+4. The master sends the command to read the microphone data.
+5. The slave sends an acknowledge.
+6. The master reads the microphone data.
+7. The master sends a stop condition.
+8. The master compares the microphone data to the threshold value.
+9. If the microphone data is greater than the threshold value, the master sends a start condition.
+10. The master sends the slave address and the R/W bit.
+11. The slave sends an acknowledge.
+12. The master sends the command to take an action based on the loudness of the sound.
+13. The slave sends an acknowledge.
+14. The master sends a stop condition.)_
+
+
 
 == Start working with CircuitPython on the nRF52840
 
@@ -56,7 +94,26 @@ Answer the following questions.
 1. **List some of the main differences you notice in the core modules of MicroPython and CircuitPython**
 2. **If one wants to backport a CircuitPython to MicroPython, what kind of modifications could be necessary?**
 
-_(edit this file and write your answers here)_
+[1. There are a few key differences between MicroPython and CircuitPython core modules:
+
+- MicroPython can be used with a wide variety of microcontrollers, while CircuitPython is optimised for hardware based on the Microchip ATSAMD51 microcontroller.
+
+- MicroPython is a more general set of libraries meant to interact with a larger variety of hardware, whereas CircuitPython comes with a library of modules and functions that are particular to the ATSAMD51 microcontroller.
+
+- CircuitPython has language features like the "async" and "await" keywords that allow for asynchronous programming. These keywords are not available in MicroPython.
+
+- CircuitPython has built-in support for reading and writing files to a filesystem on an external storage device, like an SD card, while MicroPython does not.
+
+- When it comes to debugging and testing code, CircuitPython has an integrated serial REPL (read-eval-print loop), but MicroPython needs a separate tool, like a serial terminal, to do so.]
+
+
+[2. Backporting a CircuitPython project to MicroPython may require a number of changes to the source code. Listed here are a few illustrations:
+
+- Since CircuitPython has some libraries and modules that MicroPython doesn't have. One may need to make adjustments to your code in order to make use of analogous MicroPython modules or come up with workarounds for the missing functionality.
+
+- In terms of syntax, CircuitPython and MicroPython may have some minor changes. For example, CircuitPython uses the "async" and "await" keywords for asynchronous programming, while MicroPython uses "yield from".
+
+- With more memory than MicroPython, CircuitPython can be used with more powerful microcontrollers. Finding alternative methods of storing data, such as an SD card or external flash memory, or optimising your code to consume less RAM may be necessary.]
 
 == Small integrated project
 

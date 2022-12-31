@@ -66,7 +66,7 @@ _(edit this file and write your answers here)_
 
 14. Answer: It will cause unexpected behaviour and might even destroy the FeatherBoard
 
-15. Answer: 
+15. Answer: The Serial0 interface is used for serial communication. It allows for the transmission of data between devices using a serial protocol. This can be used for things like debugging, sending data between devices, or communicating with external devices using a serial connection.
 
 16. Answer: The 32 KHz crystals are used to generate Oscillations(different frequencies)
 
@@ -202,19 +202,19 @@ image:images/button_on_27.png[]
 ----
 #Configure GPIO#27 as input with internal pull-up (so the default value is HIGH), and turn on and off the embedded LED on GPIO#13 whenever the button is pressed (on falling edge).
 
-import machine
-from machine import Pin
+        import machine
+        from machine import Pin
 
-pin = machine.Pin(13, machine.Pin.OUT)
-button = machine.Pin(27, machine.Pin.IN, machine.Pin.PULL_UP)
+        pin = machine.Pin(13, machine.Pin.OUT)
+        button = machine.Pin(27, machine.Pin.IN, machine.Pin.PULL_UP)
 
-def toggle(p):
-    p.value(not p.value())
+        def toggle(p):
+        p.value(not p.value())
 
-def callback(p):
-        toggle(pin)
+        def callback(p):
+                toggle(pin)
 
-button.irq(trigger=Pin.IRQ_FALLING, handler=callback)
+        button.irq(trigger=Pin.IRQ_FALLING, handler=callback)
 
 ----
 
@@ -238,44 +238,25 @@ image:images/potentiometer_on_27.png[]
 [source,python]
 ----
 
-Demonstrate the voltage measured on GPIO#27 should range between 0V and 1750mV
+#Demonstrate the voltage measured on GPIO#27 should range between 0V and 1750mV
 
-import machine
 from machine import Pin
 from machine import ADC
 pin = machine.Pin(27, machine.Pin.IN)
 adc = ADC(pin)
-adc.read_uv()
+adc.read()
 
-Write a timer that reads the raw analog value every every 100 ms, and print the actual voltage to the UART0
+#Write a timer that reads the raw analog value every every 100 ms, and print the actual voltage to the UART0
         
 import machine
-from machine import Pin, UART
-from machine import ADC
+import time
 pin = machine.Pin(27, machine.Pin.IN)
 adc = ADC(pin)
 uart0 = UART(0, baudrate=9600, tx=33, rx=32)
 while True:
-    uart0.write(adc.read_uv())
-    print(adc.read_uv())
+    adc = ADC(pin)
+    print(adc.read())
     time.sleep_ms(100)
-
-Use this value to control the pulse width modulation duty cycle on GPIO#13, so as to control the luminosity of the inner LED
-
-import machine, time
-from machine import Pin, UART, PWM
-from machine import ADC
-pin = machine.Pin(27, machine.Pin.IN)
-adc = ADC(pin)
-pwm0 = PWM(Pin(13))
-pwm0.freq(1000)
-while True:  
-    value = int((adc.read_uv()-63000)/(176000-63000))*1023
-    pwm0.duty(value)
-    print(adc.read_uv())
-    time.sleep_ms(100)
-
-
 ----
 
 
@@ -323,6 +304,21 @@ wlan.ifconfig()
 
 4. Synchronize the internal clock with using the NTP protocol using the `ntptime` module
 
+import network
+import ntptime
+
+# Connect to WiFi network
+sta_if = network.WLAN(network.STA_IF)
+sta_if.active(True)
+sta_if.connect("YOUR_WIFI_SSID", "YOUR_WIFI_PASSWORD")
+
+# Wait for connection
+while not sta_if.isconnected():
+    pass
+
+# Synchronize the internal clock with the NTP server
+ntptime.settime()
+
 
 
 5. Print the updated date and time, modified to take into account our timezone.
@@ -330,30 +326,29 @@ wlan.ifconfig()
 
 Print the current date and time of the ESP32
 
-import time
-print(time.localtime())
+        import time
+        print(time.localtime())
 
-Connect the ESP32 to your phone, configured as a WiFi Access Point.
+        Connect the ESP32 to your phone, configured as a WiFi Access Point.
 
-Print the IP address of your ESP32, and of your phone
+        Print the IP address of your ESP32, and of your phone
 
-import network
-sta_if = network.WLAN(network.STA_IF)
-sta_if.active(True)
-sta_if.connect('dann', '123456780')
-sta_if.ifconfig()
+        import network
+        sta_if = network.WLAN(network.STA_IF)
+        sta_if.active(True)
+        sta_if.connect('SSID', 'password')
+        sta_if.ifconfig()
 
 Synchronize the internal clock with using the NTP protocol using the `ntptime` module
 
-import ntptime
-ntptime.settime()
+        import ntptime
+        ntptime.settime()
 
 
 Print the updated date and time, modified to take into account our timezone.
 
-import time
-print(time.localtime())
->>>>>>> cdfec4cd174304ede390da5bd3273acb0228bb02
+        import time
+        print(time.localtime())
 ----
 
 == Deep-sleep and temperature reading
@@ -390,41 +385,49 @@ print("Temperature: {}".format(temp))
 
 #Configure EXT0 to wake up the device from sleep if a Pin of your choice is low.
 
-from machine import deepsleep, Pin
-wakeup_pin = Pin(13, Pin.IN)
-wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
-deepsleep()
+        from machine import deepsleep, Pin
+        wakeup_pin = Pin(13, Pin.IN)
+        wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
+        deepsleep()
 machine.wake_on_ext0(wakeup_pin, machine.WAKEUP_ALL_LOW)
 
 #set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
 
-from machine import deepsleep, Pin
-wakeup_pin = Pin(0, Pin.IN)
-wakeup_pin.irq(trigger=Pin.IRQ_RISING, handler=lambda pin: None)
-button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
-while True:
-  if not button_pin.value():
-    deepsleep()
+        from machine import deepsleep, Pin
+        wakeup_pin = Pin(0, Pin.IN)
+        wakeup_pin.irq(trigger=Pin.IRQ_RISING, handler=lambda pin: None)
+        button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
+        while True:
+                if not button_pin.value():
+                        deepsleep()
 
 #Put the ESP32 to deep-sleep for 5 seconds.
-from machine import deepsleep
-deepsleep(5000)
+        from machine import deepsleep
+        deepsleep(5000)
 
 #On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius
 
 from machine import deepsleep, Pin
 
 wakeup_pin = Pin(0, Pin.IN)
-wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
-
 button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
-while True:
-  if not button_pin.value():
-    deepsleep()
 
-from esp32 import raw_temperature
-temp = raw_temperature() / 100
-print("Temperature: {}".format(temp))
+
+def wakeup_handler(pin):
+    if not button_pin.value():
+        print("Wakeup cause: button press")
+    else:
+        print("Wakeup cause: timeout")
+    # Read the temperature in degrees Celsius
+    from esp32 import raw_temperature
+    temp = raw_temperature() / 100
+    print("Temperature: {}C".format(temp))
+
+wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=wakeup_handler)
+while True:
+    if not button_pin.value():
+        deepsleep(10000)
+
 
 ----
        
@@ -457,15 +460,18 @@ image:images/dht22_on_27.png[]
 python code here
 
 #Make the setting below and read the temperature and the humidity
+        import machine
+        import dht
 
-from machine import Pin
-from dht import DHT22
-d = DHT22(Pin(27))
-d.measure()
-print(d.temperature())
-print(d.humidity())
+        d = dht.DHT22(machine.Pin(27))
+        d.measure()
+        temperature = d.temperature()
+        humidity = d.humidity()
+        print("Temperature: %0.1f C" % temperature)
+        print("Humidity: %0.1f %%" % humidity)
 
-#Use excerpts of the code from `dht.py` to fetch an actual data frame (40 bits) from the DHT22 sensor, and display the 16 bits of the temperature and the corresponding integer value, the 16 bits of the humidity and the corresponding integer value, and the 8 bits of the checksum.
+
+
 ----
 
 == WS2812B Breakout RGB led
@@ -527,17 +533,18 @@ image:images/8x8_monsters.png[]
 python code here
 
 #What does I2C stands for?
-I2C stands for Inter-Integrated Circuit
+        I2C stands for Inter-Integrated Circuit
 
 #To what pins are buttons A, B, C, connected?
-A = 15
-B = 2
-C = 0
+        A = 15
+        B = 2
+        C = 0
 
 #What is the default I2C address for the I2C peripheral? Check from the official documentation section 8.1.5 a), with "SA0"=0. and "R/W#"=0
-0x3C
+        0x3C
 
 #Print the current date and time on the screen, update every second.
+<<<<<<< HEAD
 from machine import Pin, SoftI2C
 import ssd1306
 import framebuf
@@ -589,9 +596,54 @@ button_b.irq(trigger=Pin.IRQ_FALLING, handler=button_b_was_pressed)
 
 #In this file, we see that the framebuf.FrameBuffer.text() method uses the font_petme128_8x8 object at line 794, which stores the pixel array for each ascii character and is defined in a library that is included at line 35.
 #Describe how each character is defined as bits and bytes.
+=======
 
+import machine
+import ssd1306
+import datetime
 
+i2c = machine.I2C(scl=machine.Pin(22), sda=machine.Pin(21))
+oled = ssd1306.SSD1306_I2C(128, 32, i2c)
+oled.fill(0)
+oled.show()
 
+while True:
+oled.fill(0)
+oled.text('Hello', 0, 0)
+oled.text('World', 0, 10)
+current_time = datetime.datetime.now()
+time_string = current_time.strftime("%H:%M:%S")
+oled.text(time_string, 0, 20)
+oled.show()
+time.sleep(1)
+
+#When button A is pressed, invert the colours.
+
+import machine
+import ssd1306
+import time
+>>>>>>> ac08e8617dea080c209e8b762f43eb59f77e5cfe
+
+i2c = machine.I2C(scl=machine.Pin(22), sda=machine.Pin(21))
+oled = ssd1306.SSD1306_I2C(128, 32, i2c)
+oled.fill(0)
+oled.show()
+
+while True:
+oled.fill(0)
+oled.text('Hello', 0, 0)
+oled.text('World', 0, 10)
+oled.text(time.strftime("%H:%M:%S"), 0, 20)
+oled.show()
+time.sleep(1)
+
+if machine.Pin(15, machine.Pin.IN, machine.Pin.PULL_UP).value() == 0:
+oled.invert(1)
+oled.show()
+time.sleep(1)
+oled.invert(0)
+oled.show()
+time.sleep(1)
 
 ----
 
