@@ -140,21 +140,21 @@ _(edit this file and write your answers here)_
 
 [source,python]
 ----
-Turn on and off the embedded LED on GPIO#13.
+1. Turn on and off the embedded LED on GPIO#13.
     
         import machine
         pin = machine.Pin(13, machine.Pin.OUT)
         pin.on()
         pin.off()
 
-Connect the LED you have in your briefcase to GPIO#27 as on the image below. Turn on and off this LED. 
+2. Connect the LED you have in your briefcase to GPIO#27 as on the image below. Turn on and off this LED. 
 
         import machine
         pin = machine.Pin(27, machine.Pin.OUT)
         pin.on()
         pin.off()
 
-Create a timer to turn on and off the LED on GPIO#13 every 500ms.
+3. Create a timer to turn on and off the LED on GPIO#13 every 500ms.
 
         import machine
         pin = machine.Pin(13, machine.Pin.OUT)
@@ -163,7 +163,7 @@ Create a timer to turn on and off the LED on GPIO#13 every 500ms.
         tim0 = Timer(0)
         tim0.init(period = 500, mode = Timer.PERIODIC, lambda t:pin.value(not pin.value()))
 
-Find a way to turn on and off the LED on GPIO#13 every 500ms, and the LED on GPIO#27 every 300ms.
+4. Find a way to turn on and off the LED on GPIO#13 every 500ms, and the LED on GPIO#27 every 300ms.
 
         import machine
         pin13 = machine.Pin(13, machine.Pin.OUT)
@@ -174,6 +174,25 @@ Find a way to turn on and off the LED on GPIO#13 every 500ms, and the LED on GPI
         while True: 
             toggle(pin)
             time.sleep_ms(500)
+
+5. As the ESP32 has only four hardware timers (other microcontrollers usually have less), it wouldn’t be possible to generalize the solution of exercise 4 to n LEDs. Develop a solution that uses the uasyncio module for asynchronous I/O scheduling
+
+        import uasyncio
+        from machine import Pin
+
+        async def blink(led, period_ms):
+        while True:
+                led.on()
+                await uasyncio.sleep_ms(5)
+                led.off()
+                await uasyncio.sleep_ms(period_ms)
+
+        async def main(led1, led2):
+        uasyncio.create_task(blink(led1, 700))
+        uasyncio.create_task(blink(led2, 400))
+        await uasyncio.sleep_ms(10_000)
+
+        uasyncio.run(main(Pin(13), Pin(27)))
         
         
         
@@ -371,27 +390,29 @@ You need to check out the following guides for this exercise:
 ----
 python code here
 
-#Put the ESP32 to deep-sleep for 5 seconds.
-from machine import deepsleep
-deepsleep(5000)
+1. Put the ESP32 to deep-sleep for 5 seconds.
 
-#On wake up, print the internal temperature in degrees Celsius
-from machine import deepsleep
-from esp32 import raw_temperature
-deepsleep(5000)
-temp = raw_temperature() / 100
-print("Temperature: {}".format(temp))
+        from machine import deepsleep
+        deepsleep(5000)
+
+2. On wake up, print the internal temperature in degrees Celsius
+
+        from machine import deepsleep
+        from esp32 import raw_temperature
+        deepsleep(5000)
+        temp = raw_temperature() / 100
+        print("Temperature: {}".format(temp))
 
 
-#Configure EXT0 to wake up the device from sleep if a Pin of your choice is low.
+3. Configure EXT0 to wake up the device from sleep if a Pin of your choice is low.
 
         from machine import deepsleep, Pin
         wakeup_pin = Pin(13, Pin.IN)
         wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=lambda pin: None)
         deepsleep()
-machine.wake_on_ext0(wakeup_pin, machine.WAKEUP_ALL_LOW)
+        machine.wake_on_ext0(wakeup_pin, machine.WAKEUP_ALL_LOW)
 
-#set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
+4. set up a circuit such that you can put the ESP32 in deep sleep, and wake it up when pressing a button.
 
         from machine import deepsleep, Pin
         wakeup_pin = Pin(0, Pin.IN)
@@ -401,32 +422,33 @@ machine.wake_on_ext0(wakeup_pin, machine.WAKEUP_ALL_LOW)
                 if not button_pin.value():
                         deepsleep()
 
-#Put the ESP32 to deep-sleep for 5 seconds.
+5. Put the ESP32 to deep-sleep for 5 seconds.
+
         from machine import deepsleep
         deepsleep(5000)
 
-#On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius
+6. On wake up, print the cause (button or timeout), and the internal temperature in degrees Celsius
 
-from machine import deepsleep, Pin
+        from machine import deepsleep, Pin
 
-wakeup_pin = Pin(0, Pin.IN)
-button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
+        wakeup_pin = Pin(0, Pin.IN)
+        button_pin = Pin(12, Pin.IN, Pin.PULL_UP)
 
 
-def wakeup_handler(pin):
-    if not button_pin.value():
-        print("Wakeup cause: button press")
-    else:
-        print("Wakeup cause: timeout")
-    # Read the temperature in degrees Celsius
-    from esp32 import raw_temperature
-    temp = raw_temperature() / 100
-    print("Temperature: {}C".format(temp))
+        def wakeup_handler(pin):
+        if not button_pin.value():
+                print("Wakeup cause: button press")
+        else:
+                print("Wakeup cause: timeout")
+        # Read the temperature in degrees Celsius
+        from esp32 import raw_temperature
+        temp = raw_temperature() / 100
+        print("Temperature: {}C".format(temp))
 
-wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=wakeup_handler)
-while True:
-    if not button_pin.value():
-        deepsleep(10000)
+        wakeup_pin.irq(trigger=Pin.IRQ_FALLING, handler=wakeup_handler)
+        while True:
+        if not button_pin.value():
+                deepsleep(10000)
 
 
 ----
