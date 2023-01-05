@@ -43,6 +43,7 @@ Answers:
 Install the **nRF Connect** application on your smartphone, and make so that your device behaves as a valid BLE peripheral.
 
 Develop a BLE client to access the BLE peripheral.
+
 Find the code related to this at "lab_ble" folder
 
 

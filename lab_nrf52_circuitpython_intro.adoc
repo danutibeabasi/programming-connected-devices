@@ -121,6 +121,8 @@ In the remaining time allocated by the professor, develop one or more small proj
 
 Write here the location of the project in your repository, and describe the main purpose and functionnalities of your project in its `README.md` file.
 
+Location of the Integrated project in the root directory - lab_nrf52_circuitpython_intro\sample
+
 IMPORTANT: You may totally use snippets from existing samples or answers to questions on stackoverflow for example. But whenever you do **cite your sources** 
 
 
