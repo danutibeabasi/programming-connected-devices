@@ -34,11 +34,16 @@ Answers:
 
 2. The first value - average ambient temperature as measured during a period of time, the second value - start of the period, and the third value - end of the period.
 
-3. 
+3. the phones use UUIDs to find the right services and characteristics.
+
+4. Binary Sensor service 0x183B, Indoor Positioning service 0x1821, 0x1808 Glucose service, 0x1809 Health Thermometer service, 0x181D Weight Scale service, 0x1844 Volume Control service. Characteristics - Sensor Location 0x2A5D, 0x2A35 Blood Pressure Measurement, 0x2A37 Heart Rate Measurement, 
+0x2A38 Body Sensor Location, 0x2A67 Location and Speed, 0x2A6C Elevation, 0x2A6D Pressure, 0x2A6E Temperature,
+0x2A6F Humidity, 0x2A7A Heat Index, 0x2A98 Weight
 
 Install the **nRF Connect** application on your smartphone, and make so that your device behaves as a valid BLE peripheral.
 
 Develop a BLE client to access the BLE peripheral.
+Find the code related to this at "lab_ble" folder
 
 
 
