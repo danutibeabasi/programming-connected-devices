@@ -1,8 +1,9 @@
 # Helpers for generating BLE advertising payloads.
 
-from micropython import const
 import struct
+
 import bluetooth
+from micropython import const
 
 # Advertising payloads are repeated packets of the following form:
 #   1 byte data length (N + 1)
@@ -21,7 +22,9 @@ _ADV_TYPE_APPEARANCE = const(0x19)
 
 
 # Generate a payload to be passed to gap_advertise(adv_data=...).
-def advertising_payload(limited_disc=False, br_edr=False, name=None, services=None, appearance=0):
+def advertising_payload(
+    limited_disc=False, br_edr=False, name=None, services=None, appearance=0
+):
     payload = bytearray()
 
     def _append(adv_type, value):
@@ -77,17 +80,3 @@ def decode_services(payload):
     for u in decode_field(payload, _ADV_TYPE_UUID128_COMPLETE):
         services.append(bluetooth.UUID(u))
     return services
-
-
-def demo():
-    payload = advertising_payload(
-        name="micropython",
-        services=[bluetooth.UUID(0x181A), bluetooth.UUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")],
-    )
-    print(payload)
-    print(decode_name(payload))
-    print(decode_services(payload))
-
-
-if __name__ == "__main__":
-    demo()
