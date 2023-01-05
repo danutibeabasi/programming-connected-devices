@@ -554,18 +554,18 @@ image:images/8x8_monsters.png[]
 ----
 python code here
 
-#What does I2C stands for?
+1. What does I2C stands for?
         I2C stands for Inter-Integrated Circuit
 
-#To what pins are buttons A, B, C, connected?
+2. To what pins are buttons A, B, C, connected?
         A = 15
         B = 2
         C = 0
 
-#What is the default I2C address for the I2C peripheral? Check from the official documentation section 8.1.5 a), with "SA0"=0. and "R/W#"=0
+3. What is the default I2C address for the I2C peripheral? Check from the official documentation section 8.1.5 a), with "SA0"=0. and "R/W#"=0
         0x3C
 
-#Print the current date and time on the screen, update every second.
+4. Print the current date and time on the screen, update every second.
 <<<<<<< HEAD
 from machine import Pin, SoftI2C
 import ssd1306
@@ -576,11 +576,12 @@ i2c = SoftI2C(sda=Pin(23), scl=Pin(22))
 display = ssd1306.SSD1306_I2C(128, 64, i2c)
 display.poweron()
 currenttime = ''
-for t in time.gmtime():
-    currenttime = currenttime + str(t)
-print(currenttime)
-display.text(currenttime, 0, 0, 1)
-display.show()
+while True:
+        for t in time.gmtime():
+                currenttime = currenttime + str(t)
+        print(currenttime)
+        display.text(currenttime, 0, 0, 1)
+        display.show()
 
 
 #When button A is pressed, invert the colours.
