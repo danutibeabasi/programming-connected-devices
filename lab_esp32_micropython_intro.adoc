@@ -219,7 +219,7 @@ image:images/button_on_27.png[]
 
 [source,python]
 ----
-#Configure GPIO#27 as input with internal pull-up (so the default value is HIGH), and turn on and off the embedded LED on GPIO#13 whenever the button is pressed (on falling edge).
+1. Configure GPIO#27 as input with internal pull-up (so the default value is HIGH), and turn on and off the embedded LED on GPIO#13 whenever the button is pressed (on falling edge).
 
         import machine
         from machine import Pin
@@ -257,7 +257,7 @@ image:images/potentiometer_on_27.png[]
 [source,python]
 ----
 
-#Demonstrate the voltage measured on GPIO#27 should range between 0V and 1750mV
+1. Demonstrate the voltage measured on GPIO#27 should range between 0V and 1750mV
 
 from machine import Pin
 from machine import ADC
@@ -265,17 +265,40 @@ pin = machine.Pin(27, machine.Pin.IN)
 adc = ADC(pin)
 adc.read()
 
-#Write a timer that reads the raw analog value every every 100 ms, and print the actual voltage to the UART0
+2. Write a timer that reads the raw analog value every 100 ms, and print the actual voltage to the UART0
         
 import machine
 import time
+
 pin = machine.Pin(27, machine.Pin.IN)
 adc = ADC(pin)
 uart0 = UART(0, baudrate=9600, tx=33, rx=32)
 while True:
     adc = ADC(pin)
     print(adc.read())
+    uart0.write(adc.read())
+    pwm0 = machine.PWM(machine.Pin(13))        
+    pwm0.duty(adc.read())  
     time.sleep_ms(100)
+
+3. Use this value to control the pulse width modulation duty cycle on GPIO#13, so as to control the luminosity of the inner LED
+
+import machine
+import time
+
+pin = machine.Pin(27, machine.Pin.IN)
+adc = ADC(pin)
+uart0 = UART(0, baudrate=9600, tx=33, rx=32)
+while True:
+    adc = ADC(pin)
+    print(adc.read())
+    uart0.write(adc.read())
+    pwm0 = machine.PWM(machine.Pin(13))        
+    pwm0.duty(adc.read())  
+    time.sleep_ms(100)
+           
+
+
 ----
 
 
@@ -481,7 +504,7 @@ image:images/dht22_on_27.png[]
 ----
 python code here
 
-#Make the setting below and read the temperature and the humidity
+1. Make the setting below and read the temperature and the humidity
         import machine
         import dht
 
@@ -584,7 +607,7 @@ while True:
         display.show()
 
 
-#When button A is pressed, invert the colours.
+5. When button A is pressed, invert the colours.
 from machine import Pin, SoftI2C
 import ssd1306
 import framebuf
@@ -606,7 +629,7 @@ if buttonA:
     display.text(currenttime, 0, 5, 0)
 display.show()
 
-#Also print a counter that increments when button B is pressed (use an interrupt)
+6. Also print a counter that increments when button B is pressed (use an interrupt)
 from machine import Pin
 from ssd1306 import SSD1306_I2C
 import utime
@@ -617,7 +640,7 @@ def button_b_was_pressed():
 button_b = Pin(2, Pin.IN, Pin.PULL_UP)
 button_b.irq(trigger=Pin.IRQ_FALLING, handler=button_b_was_pressed)
 
-#In this file, we see that the framebuf.FrameBuffer.text() method uses the font_petme128_8x8 object at line 794, which stores the pixel array for each ascii character and is defined in a library that is included at line 35.
+7. In this file, we see that the framebuf.FrameBuffer.text() method uses the font_petme128_8x8 object at line 794, which stores the pixel array for each ascii character and is defined in a library that is included at line 35.
 #Describe how each character is defined as bits and bytes.
 =======
 
@@ -640,7 +663,7 @@ oled.text(time_string, 0, 20)
 oled.show()
 time.sleep(1)
 
-#When button A is pressed, invert the colours.
+8. When button A is pressed, invert the colours.
 
 import machine
 import ssd1306
